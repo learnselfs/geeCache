@@ -1,11 +1,10 @@
 // Package core @Author Bing
 // @Date 2023/10/20 16:37:00
 // @Desc
-package geeCache
+package core
 
 import (
 	"container/list"
-	"fmt"
 	"sync"
 )
 
@@ -60,7 +59,6 @@ func (l *Lru[K, V]) Get(k K) (V, bool) {
 	defer l.lock.RUnlock()
 	l.lock.RLock()
 	_item, ok := l.maps[k]
-	fmt.Println(l.maps)
 	if ok {
 		l.lists.MoveToFront(_item)
 		return _item.Value.(item[K, V]).v, ok

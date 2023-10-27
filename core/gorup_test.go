@@ -1,7 +1,7 @@
 // Package geeCache @Author Bing
 // @Date 2023/10/24 13:58:00
 // @Desc
-package geeCache
+package core
 
 import (
 	"testing"
@@ -9,18 +9,18 @@ import (
 
 var db = map[string]string{"user": "admin", "password": "pass"}
 
-func call[K string, V string](k K) (V, bool) {
+func call(k string) (any, bool) {
 	var v string
 	v, ok := db[string(k)]
 	if ok {
-		return V(v), true
+		return v, true
 	}
-	return V(v), false
+	return v, false
 
 }
 
 func TestGroup(t *testing.T) {
-	group := NewGroup(2<<10, "test", call[string, string])
+	group := NewGroup(2<<10, "test", call)
 	for user, _ := range db {
 		r1, ok := group.Get(user)
 		if ok {

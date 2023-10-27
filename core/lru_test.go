@@ -1,7 +1,7 @@
 // Package geeCache @Author Bing
 // @Date 2023/10/24 17:24:00
 // @Desc
-package geeCache
+package core
 
 import (
 	"testing"
