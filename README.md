@@ -9,3 +9,6 @@ Imitate Go cache project
 
 ## v3 
 - Complete basic cache Http server
+
+## v4
+- Complete consistent hash
