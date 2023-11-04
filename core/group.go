@@ -16,6 +16,8 @@ type Group struct {
 
 var lock sync.RWMutex
 
+const ()
+
 func NewGroup(size int, name string, f callback) *Group {
 	defer lock.Unlock()
 	lock.Lock()
@@ -37,7 +39,13 @@ func (g *Group) GetGroup(name string) (*Group, bool) {
 	group, ok := g.Groups[name]
 	return group, ok
 }
-
+func (g *Group) SetGroup(size int, name string, f callback) (*Group, bool) {
+	defer g.lock.RUnlock()
+	g.lock.RLock()
+	group := NewGroup(size, name, f)
+	g.Groups[name] = group
+	return group, true
+}
 func (g *Group) Get(k string) (any, bool) {
 	defer g.lock.RUnlock()
 	g.lock.RLock()

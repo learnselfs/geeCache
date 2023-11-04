@@ -3,6 +3,8 @@
 // @Desc
 package utils
 
+import "strings"
+
 func ExcludeEmpty(li []string) []string {
 	var l []string
 	for _, v := range li {
@@ -11,4 +13,12 @@ func ExcludeEmpty(li []string) []string {
 		}
 	}
 	return l
+}
+
+func StringJoin(s ...string) string {
+	var result strings.Builder
+	for _, v := range s {
+		result.WriteString(v)
+	}
+	return result.String()
 }

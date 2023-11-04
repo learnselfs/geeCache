@@ -7,6 +7,13 @@ import (
 	"net/http"
 )
 
+type Obj struct {
+	Status string `json:"status"`
+	Code   int    `json:"code"`
+	Msg    string `json:"msg"`
+	Data   H      `json:"data"`
+}
+
 type H map[string]interface{}
 
 func obj(code int, msg string, data H) H {
@@ -28,4 +35,8 @@ func OkWithDetail(code int, msg string, data H) H {
 
 func Failed() H {
 	return obj(http.StatusInternalServerError, "", nil)
+}
+
+func FailedWithMsg(code int, msg string) H {
+	return obj(code, msg, nil)
 }

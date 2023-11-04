@@ -12,3 +12,6 @@ Imitate Go cache project
 
 ## v4
 - Complete consistent hash
+
+### v5
+- Complete basic distributed cache
