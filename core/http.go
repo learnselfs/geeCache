@@ -20,6 +20,7 @@ type Http struct {
 	*Remote
 	*Group
 	*Map
+	*SingleFlight
 	addr     string
 	basePath string
 	isApi    bool
@@ -95,7 +96,11 @@ func (h *Http) apiHandle() {
 	paths = utils.ExcludeEmpty(paths)
 	group := paths[0]
 	key := paths[1]
-	res, err := h.pick(group, key)
+	//res, err := h.pick(group, key)
+	var res, err = h.singleCall(group, key, func() ([]byte, error) {
+		res, err := h.pick(group, key)
+		return res, err
+	})
 	if err != nil {
 		h.JSON(utils.FailedWithMsg(http.StatusInternalServerError, err.Error()))
 		return
@@ -123,24 +128,25 @@ func (h *Http) apiHandle() {
 	}
 }
 
-func NewHttp(group *Group, remote *Remote, hashMap *Map, url, basePath string, api bool) *Http {
+func NewHttp(group *Group, remote *Remote, hashMap *Map, sf *SingleFlight, url, basePath string, api bool) *Http {
 	if len(basePath) == 0 {
 		basePath = defaultBasePath
 	}
 	return &Http{
-		Remote:   remote,
-		Map:      hashMap,
-		Group:    group,
-		addr:     url,
-		basePath: basePath,
-		isApi:    api,
+		Remote:       remote,
+		Map:          hashMap,
+		Group:        group,
+		SingleFlight: sf,
+		addr:         url,
+		basePath:     basePath,
+		isApi:        api,
 	}
 }
 
-func Run(group *Group, remote *Remote, hashMap *Map, url, basePath string, api bool) {
-	pool := NewHttp(group, remote, hashMap, url, basePath, api)
-	err := http.ListenAndServe(pool.addr, pool)
-	if err != nil {
-		return
-	}
-}
+//func Run(group *Group, remote *Remote, hashMap *Map, url, basePath string, api bool) {
+//	pool := NewHttp(group, remote, hashMap, url, basePath, api)
+//	err := http.ListenAndServe(pool.addr, pool)
+//	if err != nil {
+//		return
+//}
+//}

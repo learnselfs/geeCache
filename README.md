@@ -15,3 +15,6 @@ Imitate Go cache project
 
 ### v5
 - Complete basic distributed cache
+
+### v5
+- Complete basic single flight cache 

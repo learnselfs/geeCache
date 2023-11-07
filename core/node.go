@@ -29,7 +29,8 @@ func NewNode(host, port string, api bool, remoteNodeUrl []string, callback callb
 	hashMap := NewMap(defaultReplicas, nil)
 	hashMap.Add(remoteNodeUrl...)
 	group := NewGroup(defaultSize, "default", callback)
-	h := NewHttp(group, remote, hashMap, url, basePath, api)
+	sf := NewSingleFlight()
+	h := NewHttp(group, remote, hashMap, sf, url, basePath, api)
 
 	return &Node{
 		Map:     hashMap,
